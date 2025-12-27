@@ -1,0 +1,10 @@
+@import '../../app/globals.css';
+
+.input-field{
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    outline: none;
+    width: 100%;
+}
+

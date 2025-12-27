@@ -1,0 +1,41 @@
+@import '../globals.css';
+
+.input-field{
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    outline: none;
+}
+
+
+
+.switch-btn{
+    color: var(--blue);
+    cursor: pointer;
+}
+.switch-btn:hover{
+    color: var(--blue);
+    opacity: 0.8;
+}
+
+/* .error{
+    color: red;
+    font-size: 0.7rem;
+    font-style: italic;
+} */
+
+.eye-slash{
+    opacity: 0.5;
+    cursor: pointer;
+}
+.eye-slash:hover{
+    opacity: 1;
+}
+
+
+label{
+    display: flex;
+    flex-direction: column;
+}
+
+
