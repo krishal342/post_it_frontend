@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 
 const ProfileDetail = (props) => {
 
-  
+
 
 
     const loggedInUser = useSelector((state) => state.profile.data._id);
@@ -19,17 +19,12 @@ const ProfileDetail = (props) => {
     const [userData, setUserData] = useState({});
     const [editing, setEditing] = useState(false);
 
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
-    const [profilePicture, setProfilePicture] = useState('');
-
 
     const [previewUrl, setPreviewUrl] = useState(null);
 
     const imageInputRef = useRef(null);
 
-      const {
+    const {
         register,
         handleSubmit,
         setValue,
@@ -39,8 +34,8 @@ const ProfileDetail = (props) => {
 
 
 
+    // getting user profile data
     useEffect(() => {
-        // getting user profile data
         fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/${props.userId}`, {
             method: 'GET',
             credentials: 'include',
@@ -53,23 +48,14 @@ const ProfileDetail = (props) => {
     }, [])
 
     useEffect(() => {
-            setValue("firstName", userData.firstName);
-            setValue("lastName", userData.lastName);
-            setValue("email", userData.email);
-    },[userData])
+        setValue("firstName", userData.firstName);
+        setValue("lastName", userData.lastName);
+        setValue("email", userData.email);
+    }, [userData])
 
-    const handleEdit = () => {
-        // if (!editing) {
-        //     setFirstName(userData.firstName);
-        //     setLastName(userData.lastName);
-        //     setEmail(userData.email);
-        // }
-        setEditing(!editing);
-    }
 
+    // show profile picture for preview after selection of image
     const handleProfilePicChange = (e) => {
-        // console.log(e.target.value,"e.target.value");
-        setProfilePicture(e.target.value);
         const file = e.target.files?.[0];
         if (file) {
             const url = URL.createObjectURL(file);
@@ -79,9 +65,7 @@ const ProfileDetail = (props) => {
 
     const handleRemoveProfilePic = () => {
         setPreviewUrl(null);
-        setProfilePicture('');
-
-
+        imageInputRef.current.value = null;
     }
 
 
@@ -96,20 +80,17 @@ const ProfileDetail = (props) => {
         formData.append('lastName', data.lastName);
         formData.append('email', data.email);
 
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/updateProfile`, {
-            method: 'POST',
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/updateProfile`, {
+            method: 'PUT',
             body: formData,
             credentials: 'include'
 
         })
-            .then(response => response.json())
-            .then(resData => {
-
-                if (resData.success) {
-                    // setEditing(false);
-                    window.location.reload();
-                }
-            });
+        
+        if (response.ok) {
+            window.location.reload();
+        }
+            
 
     }
 
@@ -124,19 +105,23 @@ const ProfileDetail = (props) => {
 
             <form action="" className='flex justify-between w-full items-center' onSubmit={handleSubmit(onSave)} encType='multipart/form-data'>
 
+                {/* section for user details */}
                 <div className=' flex gap-5 items-center '>
 
+                    {/* section for profile picture */}
                     <div className='h-[150px] w-[150px]  flex justify-center items-center'>
                         {
                             editing
                                 ?
+                                // if editing is true show profile picture upload option
                                 <div className='h-full w-full bg-[var(--background-secondary)] rounded-full ' >
                                     {
                                         previewUrl
                                             ?
-                                            <div className='h-full w-full relative' >
+                                            // show preview of selected image
+                                            <div className='h-full w-full relative ' >
 
-                                                <img src={previewUrl} alt="profilepic" className='object-cover object-center h-full w-full rounded-full ' />
+                                                <img src={previewUrl} alt="profilepic" className='object-cover object-center  h-full w-full rounded-full overflow-hidden' />
                                                 <div className="absolute bottom-0 right-0 cursor-pointer bg-[var(--background)] p-2 " onClick={handleRemoveProfilePic}>
 
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" aria-hidden="true" viewBox="0 0 16 16">
@@ -146,6 +131,7 @@ const ProfileDetail = (props) => {
                                                 </div>
                                             </div>
                                             :
+                                            // show upload icon
                                             <div className=' h-full w-full rounded-full flex justify-center items-center' onClick={() => { imageInputRef.current?.click() }}>
 
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" className="opacity-30 m-[50px]" viewBox="0 0 16 16">
@@ -156,6 +142,7 @@ const ProfileDetail = (props) => {
                                 </div>
 
                                 :
+                                // if editing is false show profile picture
                                 <div className='h-full w-full rounded-full overflow-hidden'>
                                     {
                                         userData.profilePicture
@@ -171,11 +158,7 @@ const ProfileDetail = (props) => {
 
                         }
 
-                    </div>
-
-
-
-                    <div>
+                        {/* input field for profile picture which is hidden */}
                         <input
                             type="file"
                             style={{ display: 'none' }}
@@ -186,27 +169,24 @@ const ProfileDetail = (props) => {
                                     imageInputRef.current = e;
                                 }
                             }
-                            value={profilePicture}
                             onChange={handleProfilePicChange}
                         />
+
+                    </div>
+
+
+                    {/* section for first name , last name , email  */}
+                    <div>
+
                         {
                             editing
                                 ?
+                                // show input fields for first name, last name and email when editing is true
                                 <div className='flex flex-col'>
 
+                                    {/* input field for first name and last name */}
                                     <div className='flex'>
-                                        {/* <div>
-                                            <input
-                                                type="text"
-                                                {...register("firstName", { required: { value: true, message: "Required!" }, minLength: { value: 3, message: "First name must be at least 3 characters long" } })}
-                                                // {...register("firstName")}
-                                                value={firstName}
-                                                className='input-field'
-                                                onChange={(e) => setFirstName(e.target.value)}
-                                            />
-                                            {errors.firstName && <span className='error'>{errors.firstName.message}</span>}
-                                        </div> */}
-
+                                        {/* first name  */}
                                         <div>
                                             <input
                                                 type="text"
@@ -216,17 +196,7 @@ const ProfileDetail = (props) => {
                                             />
                                             {errors.firstName && <span className='error'>{errors.firstName.message}</span>}
                                         </div>
-                                        {/* <div>
-                                            <input
-                                                type="text"
-                                                {...register("lastName", { required: { value: true, message: "Required!" }, minLength: { value: 3, message: "Last name must be at least 3 characters long" } })}
-                                                // {...register("lastName")}
-                                                value={lastName}
-                                                className='input-field'
-                                                onChange={(e) => setLastName(e.target.value)}
-                                            />
-                                            {errors.lastName && <span className='error'>{errors.lastName.message}</span>}
-                                        </div> */}
+                                        {/* last name */}
                                         <div>
                                             <input
                                                 type="text"
@@ -237,6 +207,8 @@ const ProfileDetail = (props) => {
                                             {errors.lastName && <span className='error'>{errors.lastName.message}</span>}
                                         </div>
                                     </div>
+
+                                    {/* input field for email */}
                                     <input
                                         type="text"
                                         {...register(
@@ -246,16 +218,14 @@ const ProfileDetail = (props) => {
                                                 pattern: { value: /^[A-Z0-9_]+@[A-Z0-9._]+\.[A-Z]{2,}$/i, message: "Invalid email address" }
                                             }
                                         )}
-                                        // {...register("email")}
-                                        // value={email}
                                         className="input-field"
-                                        // onChange={(e) => setEmail(e.target.value)}
                                     />
                                     {errors.email && <span className='error'>{errors.email.message}</span>}
 
                                 </div>
 
                                 :
+                                // show user details when editing is false
                                 <div>
                                     <p>{userData.firstName} {userData.lastName}</p>
                                     <p>{userData.email}</p>
@@ -265,6 +235,7 @@ const ProfileDetail = (props) => {
 
                 </div>
 
+                {/* section to show edit button */}
                 <div className='ml-5'>
                     {
                         (loggedInUser === props.userId || props.userId === 'me')
@@ -272,23 +243,28 @@ const ProfileDetail = (props) => {
                                 ? <p className='loader'></p>
                                 : editing
                                     ?
+                                    // show save and cancel icon when editing is true
                                     <div className=' flex flex-col gap-3'>
 
+                                        {/* save icon */}
                                         <button type='submit'>
 
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="save" viewBox="0 0 16 16" >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="save cursor-pointer" viewBox="0 0 16 16" >
                                                 <path d="M11 2H9v3h2z" />
                                                 <path d="M1.5 0h11.586a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5v-13A1.5 1.5 0 0 1 1.5 0M1 1.5v13a.5.5 0 0 0 .5.5H2v-4.5A1.5 1.5 0 0 1 3.5 9h9a1.5 1.5 0 0 1 1.5 1.5V15h.5a.5.5 0 0 0 .5-.5V2.914a.5.5 0 0 0-.146-.353l-1.415-1.415A.5.5 0 0 0 13.086 1H13v4.5A1.5 1.5 0 0 1 11.5 7h-7A1.5 1.5 0 0 1 3 5.5V1H1.5a.5.5 0 0 0-.5.5m3 4a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5V1H4zM3 15h10v-4.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5z" />
                                             </svg>
                                         </button>
 
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" aria-hidden="true" viewBox="0 0 16 16" onClick={handleEdit}>
+                                        {/* cancel icon */}
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" aria-hidden="true" viewBox="0 0 16 16" onClick={() => setEditing(false)} className='cursor-pointer'>
                                             <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
                                         </svg>
 
                                     </div>
 
-                                    : <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="edit" viewBox="0 0 16 16" onClick={() => handleEdit()}>
+                                    :
+                                    // show edit icon when editing is false
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="edit cursor-pointer" viewBox="0 0 16 16" onClick={() => setEditing(true)} >
                                         <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
                                         <path fillRule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
                                     </svg>

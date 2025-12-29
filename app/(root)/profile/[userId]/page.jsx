@@ -20,12 +20,14 @@ const ProfilePage = () => {
   const tab = searchParams.get('tab') || 'post';
   const [activeTab, setActiveTab] = useState(tab);
 
+  // set active tab based on search params
   useEffect(() => {
     const currentTab = searchParams.get('tab');
     setActiveTab(currentTab)
   }, [searchParams])
 
 
+  // fetch posts, liked posts, commented posts based on active tab
   useEffect(() => {
 
     switch (activeTab) {
@@ -42,6 +44,7 @@ const ProfilePage = () => {
           });
         break;
 
+        // updating is required, fetch api don't work properly
       case 'liked':
         fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/liked/${userId}`, {
           method: 'GET',
@@ -71,22 +74,17 @@ const ProfilePage = () => {
   }, [activeTab]);
 
 
-
-
-
-
-
   return (
     <div className='w-full flex flex-col gap-5 items-center my-5'>
 
-      <div className='w-[50%]'>
-
+    {/* show proile detail of user  */}
+      <div className='w-[70%]'>
         <ProfileDetail userId={userId} />
       </div>
 
       <hr className='w-[90%]' />
 
-    {/* button to show posts, liked posts, commented posts of user */}
+    {/* button to select tab to show posts, liked posts, commented posts of user */}
       <div className='flex gap-5 w-[90%]'>
         <p
           onClick={() => setActiveTab('post')}
@@ -102,12 +100,12 @@ const ProfilePage = () => {
           className={`links ${activeTab === 'commented' && 'active'}`}>Commented </p>
       </div>
 
+    {/* show posts on based on selected tab */}
       <div className="flex flex-col w-[400px]">
         {
           resData?.map((post) => {
             return (
-              // <Card key={post._id} profilePicture={post.user.profilePicture} firstName={post.user.firstName} lastName={post.user.lastName}  image={post.image} description={post.description} tags={post.tags} />
-              <Card key={post.id} post={post} />
+              <Card key={post.id} post={post} userId={userId}/>
             )
           })
         }

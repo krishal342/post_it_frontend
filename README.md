@@ -41,4 +41,3 @@ login
 create
 profileDetail
 navbar
-card - delete

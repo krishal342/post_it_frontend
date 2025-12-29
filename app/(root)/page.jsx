@@ -10,14 +10,11 @@ export default async function Home() {
     const resData = await respons.json();
 
 
-
-
   return (
     <div className="flex flex-col w-[400px]">
       {
         resData.map((post)=>{
           return(
-            // <Card key={post._id} userId={post.user._id} profilePicture={post.user.profilePicture} firstName={post.user.firstName} lastName={post.user.lastName} image={post.image} description={post.description} tags={post.tags} />
             <Card key={post.id} post={post}/>
           )
         })
