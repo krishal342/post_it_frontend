@@ -13,7 +13,7 @@ const ProfileDetail = (props) => {
 
 
 
-    const loggedInUser = useSelector((state) => state.profile.data._id);
+    const loggedInUser = useSelector((state) => state.profile.data.id);
 
 
     const [userData, setUserData] = useState({});

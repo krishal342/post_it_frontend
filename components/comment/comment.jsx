@@ -6,7 +6,7 @@ const Comment = ({comment}) => {
   return (
     
     <div className='bg-[var(--background)] p-2 rounded-md text-xs '>
-        <Link href={`/profile/${comment.user._id}?tab=post`} className='flex gap-2 items-center'>
+        <Link href={`/profile/${comment.user.id}?tab=post`} className='flex gap-2 items-center'>
           <div className='h-5 w-5 overflow-hidden  relative rounded-full'>
             {
               comment.user.profilePicture
@@ -19,7 +19,7 @@ const Comment = ({comment}) => {
 
           <p>{comment.user.firstName} {comment.user.lastName}</p>
         </Link>
-        <p className='mt-2'>{comment.comment}</p>
+        <p className='mt-2'>{comment.content}</p>
     </div>
   )
 }

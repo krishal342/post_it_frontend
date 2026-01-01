@@ -28,7 +28,7 @@ const Card = ( props ) => {
             <div className='w-full flex justify-between items-center'>
 
                 {/* Author details */}
-                <Link href={`/profile/${props.post.author.id}?tab=post`} className='flex gap-2 items-center'>
+                <Link href={`/profile/${props.post.authorId}?tab=post`} className='flex gap-2 items-center'>
                     <div className='h-8 w-8 overflow-hidden  relative rounded-full'>
                         {
                             props.post.author.profilePicture

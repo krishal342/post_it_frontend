@@ -16,7 +16,7 @@ const Actions = ({ post }) => {
     const userId = useSelector((state) => state.profile.data.id);
 
     const [likes, setLikes] = useState(post.likesCount);
-    const [isLiked, setIsLiked] = useState(null);
+    const [isLiked, setIsLiked] = useState(post.isLiked);
 
 
     const handlePostLike = () => {
@@ -43,7 +43,7 @@ const Actions = ({ post }) => {
     const [submitted, setSubmitted] = useState(false);
 
     const onComment = (data) => {
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/post/comment/${post._id}`, {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/comment/${post.id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -53,7 +53,7 @@ const Actions = ({ post }) => {
         })
             .then(async res => {
                 const data = await res.json();
-                setNewComment(data.comment);
+                setNewComment(data);
                 setSubmitted(true);
             })
 
@@ -120,20 +120,25 @@ const Actions = ({ post }) => {
 
 
                     </form>
-                    {
-                        submitted && (
-                            <Comment comment={newComment} />
-                        )
-                    }
-                    {
 
-                        post.comments?.slice().reverse().map((comment) => {
-                            return <Comment key={comment._id} comment={comment} />
-                        })
-                    }
 
                 </div>
             }
+            {/* comments */}
+            <div className='mt-3 flex flex-col gap-2'>
+                {
+                    submitted && (
+                        <Comment comment={newComment} />
+                    )
+                }
+
+                {
+
+                    post.comments?.slice().reverse().map((comment) => {
+                        return <Comment key={comment.id} comment={comment} />
+                    })
+                }
+            </div>
 
         </div>
     )
