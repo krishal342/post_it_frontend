@@ -16,13 +16,12 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['profile']
 
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-export const makeStore =  configureStore({
+export const store =  configureStore({
     reducer:persistedReducer,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
@@ -31,4 +30,4 @@ export const makeStore =  configureStore({
   });
 
 
-export const persistor = persistStore(makeStore);
+export const persistor = persistStore(store);

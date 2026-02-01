@@ -4,14 +4,15 @@ import { useForm } from 'react-hook-form';
 
 import './profileDetail.css'
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setProfile } from '@/redux/slices/profileSlice'
 
 
 
 const ProfileDetail = (props) => {
 
 
-
+    const dispatch = useDispatch();
 
     const loggedInUser = useSelector((state) => state.profile.data.id);
 
@@ -85,9 +86,13 @@ const ProfileDetail = (props) => {
             body: formData,
             credentials: 'include'
 
-        })
+        });
+
+        const resData = await response.json();
+
         
         if (response.ok) {
+            dispatch(setProfile(resData));
             window.location.reload();
         }
             

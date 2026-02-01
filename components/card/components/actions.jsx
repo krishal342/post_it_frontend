@@ -134,7 +134,7 @@ const Actions = ({ post }) => {
 
                 {
 
-                    post.comments?.slice().reverse().map((comment) => {
+                    post.comments?.slice().map((comment) => {
                         return <Comment key={comment.id} comment={comment} />
                     })
                 }

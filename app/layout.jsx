@@ -3,7 +3,6 @@ import "./globals.css";
 
 
 import { ReduxProvider } from '@/redux/Provider';
-import FetchUser from "./fetchUser";
 
 
 const geistSans = Geist({

@@ -4,10 +4,14 @@ import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
+import { useDispatch } from 'react-redux'
+import { setProfile } from '@/redux/slices/profileSlice'
+
 import '../auth.css'
 
 const LoginPage = () => {
 
+    const dispatch = useDispatch();
 
     const [showPassword, setShowPassword] = useState(false);
 
@@ -33,6 +37,8 @@ const LoginPage = () => {
         });
         const resData = await response.json();
 
+        dispatch(setProfile(resData.user));
+        
         if(response.ok){
             router.push('/');
         }

@@ -3,11 +3,13 @@ import React from 'react'
 import Link from 'next/link'
 
 import Actions from './components/actions'
+import { useSelector } from 'react-redux'
 
 import './card.css'
 
-const Card = ( props ) => {
+const Card = (props) => {
 
+    const userId = useSelector((state) => state.profile.data.id);
     const [showDelete, setShowDelete] = React.useState(false);
 
     const handleDelete = async () => {
@@ -15,12 +17,13 @@ const Card = ( props ) => {
             method: 'DELETE',
             credentials: 'include'
         });
+        const resData = await res.json();
         if (res.ok) {
             window.location.reload();
         }
     }
 
-    
+
     return (
         <div className='w-full bg-[var(--background-secondary)] p-4 flex flex-col gap-3 rounded-lg items-start my-2 '>
 
@@ -44,19 +47,19 @@ const Card = ( props ) => {
 
                 {/* post delet button */}
                 {
-                    (props.userId == 'me' ) ?
+                    (props.post.authorId == userId) ?
 
-                    <div className='relative '>
+                        <div className='relative '>
 
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" className="cursor-pointer" viewBox="0 0 16 16" onClick={() => setShowDelete(!showDelete)}>
-                            <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
-                        </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" className="cursor-pointer" viewBox="0 0 16 16" onClick={() => setShowDelete(!showDelete)}>
+                                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
+                            </svg>
 
-                        <div className={'absolute border border-[var(--border-color)] bg-[var(--background)] rounded-lg p-1 text-sm ' + (showDelete ? 'flex' : 'hidden') + ' flex-col right-0 top-6'}>
-                            <p className='links' onClick={handleDelete}>Delete</p>
+                            <div className={'absolute border border-[var(--border-color)] bg-[var(--background)] rounded-lg p-1 text-sm ' + (showDelete ? 'flex' : 'hidden') + ' flex-col right-0 top-6'}>
+                                <p className='links' onClick={handleDelete}>Delete</p>
+                            </div>
                         </div>
-                    </div>
-                    : ''
+                        : ''
 
                 }
 
@@ -64,11 +67,29 @@ const Card = ( props ) => {
             </div>
 
             {/* Image section of card */}
-            <div className='w-full rounded-lg overflow-hidden'>
+            {/* <div className='w-full rounded-lg overflow-hidden'>
                 {
                     props.post.image && <img src={props.post.image} alt="photo" className='w-full' />
                 }
 
+            </div> */}
+
+            <div className="w-full rounded-lg overflow-hidden">
+                {props.post.image && (
+                    props.post.image.match(/\.(mp4|webm|ogg)$/i) ? (
+                        <video
+                            src={props.post.image}
+                            controls
+                            className="w-full"
+                        />
+                    ) : (
+                        <img
+                            src={props.post.image}
+                            alt="media"
+                            className="w-full"
+                        />
+                    )
+                )}
             </div>
 
             {/* Description and tags section of card */}

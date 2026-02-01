@@ -2,9 +2,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { set, useForm } from 'react-hook-form';
 
+import { useRouter } from 'next/navigation';
+
 
 
 const CreatePage = () => {
+
+  const router = useRouter();
 
   const [previewUrl, setPreviewUrl] = useState(null);
   const { register, handleSubmit, setError, clearErrors, formState: { errors, isSubmitting } } = useForm();
@@ -78,7 +82,8 @@ const CreatePage = () => {
     const resData = await response.json();
 
     if (response.ok) {
-      window.location.reload();
+      // window.location.reload();
+      router.push('/');
     }
 
   }

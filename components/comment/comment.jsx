@@ -1,11 +1,33 @@
 import React from 'react'
 import Link from 'next/link'
 
-const Comment = ({comment}) => {
+import { useSelector } from 'react-redux';
+
+const Comment = ({ comment }) => {
   // console.log(comment)
+
+  const [showDelete, setShowDelete] = React.useState(false);
+
+  const userId = useSelector((state) => state.profile.data.id);
+
+  const deleteComment = async () => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/comment/${comment.id}`, {
+      method: 'DELETE',
+      credentials: 'include'
+    });
+    const resData = await res.json();
+    console.log(resData);
+    if (res.ok) {
+      window.location.reload();
+    }
+
+  }
+
   return (
-    
+
     <div className='bg-[var(--background)] p-2 rounded-md text-xs '>
+      <div className='flex justify-between'>
+
         <Link href={`/profile/${comment.user.id}?tab=post`} className='flex gap-2 items-center'>
           <div className='h-5 w-5 overflow-hidden  relative rounded-full'>
             {
@@ -19,7 +41,25 @@ const Comment = ({comment}) => {
 
           <p>{comment.user.firstName} {comment.user.lastName}</p>
         </Link>
-        <p className='mt-2'>{comment.content}</p>
+
+        {
+          (comment.user.id == userId) &&
+          <div className='relative '>
+
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" className="cursor-pointer" viewBox="0 0 16 16" onClick={() => setShowDelete(!showDelete)}>
+              <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
+            </svg>
+
+            <div className={'absolute border border-[var(--border-color)] bg-[var(--background)] rounded-lg p-1 text-sm ' + (showDelete ? 'flex' : 'hidden') + ' flex-col right-0 top-6'}>
+              <p className='links' onClick={deleteComment}>Delete</p>
+            </div>
+
+          </div>
+        }
+
+
+      </div>
+      <p className='mt-2'>{comment.content}</p>
     </div>
   )
 }

@@ -1,14 +1,14 @@
 'use client'
 
 import { Provider } from "react-redux"
-import { makeStore, persistor } from "./store"
+import { store, persistor } from "./store"
 
 import { PersistGate } from "redux-persist/integration/react"
 
 
 export function ReduxProvider({ children }) {
 
-    return <Provider store={makeStore}>
+    return <Provider store={store}>
 
         <PersistGate loading={<div>loading...</div>} persistor={persistor}>
 
