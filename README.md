@@ -16,8 +16,11 @@
 # .env variables
 NEXT_PUBLIC_API_URL - // for backend URL
 
-# links
+# Routes
 
-link of backend code - https://github.com/krishal342/post_it_backend
+- /auth/login  -> login page
+- /auth/signup  -> signup page
 
-link of frontend - 
+- /  -> home page
+- /create  -> post create page
+- /profile/userId  -> profile page
