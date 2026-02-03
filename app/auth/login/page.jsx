@@ -36,13 +36,13 @@ const LoginPage = () => {
             credentials: 'include'
         });
         const resData = await response.json();
-        console.log(resData);
+        // console.log(resData);
 
         dispatch(setProfile(resData.user));
         
         if(response.ok){
-            // router.push('/');
-            console.log("Login successful, reloading page");
+            router.push('/');
+            // console.log("Login successful, reloading page");
         }
         else{
             setError('invalidCredentials', { message: resData.message });
