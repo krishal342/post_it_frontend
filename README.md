@@ -1,3 +1,7 @@
+# Links
+- frontend UI -> https://post-it-murex-phi.vercel.app
+- backend code -> https://github.com/krishal342/post_it_backend_v1
+
 # This is the frontend project made using next.js
  - react-hook-form // for form validation
  - react-redux
