@@ -1,17 +1,21 @@
+'use client'
 import React from 'react'
-import { cookies } from 'next/headers';
+// import { cookies } from 'next/headers';
 
 import AuthBar from '@/components/authBar/authBar'
 import NavBar from '@/components/navBar/navBar'
 import SideBar from '@/components/sideBar/sideBar'
 
+import { useSelector } from 'react-redux';
 
 
-const RootLayout = async ({ children }) => {
+const RootLayout =  ({ children }) => {
 
-  const cookieStore = await cookies();
-  const token = cookieStore.get('loginToken')?.value;
+  // const cookieStore = await cookies();
+  // const token = cookieStore.get('loginToken')?.value;
 
+    const loggedInUserId = useSelector((state) => state.profile.data.id);
+  
 
 
   return (
@@ -20,7 +24,7 @@ const RootLayout = async ({ children }) => {
 
         <div className='fixed top-0 max-w-[var(--body-max-width)] w-full z-20 bg-[var(--background)]'>
           {
-            !token
+            !loggedInUserId
               ?
               <AuthBar />
               :
@@ -45,3 +49,4 @@ const RootLayout = async ({ children }) => {
 }
 
 export default RootLayout
+

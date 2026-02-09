@@ -5,6 +5,8 @@ import { usePathname, useRouter } from 'next/navigation'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { setActiveLink } from '@/redux/slices/activeLinkSlice'
+import { setProfile } from '@/redux/slices/profileSlice'
+
 
 import '../../app/globals.css';
 
@@ -51,6 +53,7 @@ const NavBar = () => {
         }).then(response => {
             if (response.ok) {
                 window.location.reload();
+                dispatch(setProfile({}));
             }
         });
     };
