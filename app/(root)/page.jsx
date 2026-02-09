@@ -1,14 +1,12 @@
 "use client";
-import { cookies } from "next/headers";
+// import { cookies } from "next/headers";
 import Card from "@/components/card/card";
 
 export default async function Home() {
 
-  const cookieStore = await cookies();
-  const loginToken = cookieStore.get('loginToken');
+  // const cookieStore = await cookies();
+  // const loginToken = cookieStore.get('loginToken');
 
-  console.log("cookies",cookieStore);
-  console.log("loginToken", loginToken);
 
   const respons = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/home`, {
     method: 'GET',
