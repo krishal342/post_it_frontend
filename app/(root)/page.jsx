@@ -1,3 +1,4 @@
+"use client";
 import { cookies } from "next/headers";
 import Card from "@/components/card/card";
 
@@ -13,10 +14,10 @@ export default async function Home() {
     method: 'GET',
     // credentials: 'include',  // don't work
     // this is server side rendering so cookies are available from browser so need manually add cookies
-    headers: {
-      Cookie: `loginToken=${loginToken?.value}`
-    }
-
+    // headers: {
+    //   Cookie: `loginToken=${loginToken?.value}`
+    // }
+    credentials: 'include',
   });
 
 
