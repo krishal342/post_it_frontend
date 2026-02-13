@@ -14,7 +14,7 @@ const ProfilePage = () => {
     if (!loggedInUserId) {
       router.push('/auth/login');
     }
-  },[loggedInUserId]);
+  },[]);
 
   const userId = useParams().userId;
 

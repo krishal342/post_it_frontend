@@ -16,7 +16,7 @@ const CreatePage = () => {
     if (!userId) {
       router.push('/auth/login');
     }
-  }, [userId]);
+  }, []);
 
   const router = useRouter();
 
