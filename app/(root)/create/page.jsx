@@ -4,19 +4,9 @@ import { set, useForm } from 'react-hook-form';
 
 import { useRouter } from 'next/navigation';
 
-import { useSelector } from 'react-redux';
-
 
 
 const CreatePage = () => {
-
-  const userId = useSelector((state) => state.profile.data.id);
-
-  useEffect(() => {
-    if (!userId) {
-      router.push('/auth/login');
-    }
-  }, []);
 
   const router = useRouter();
 
@@ -98,9 +88,6 @@ const CreatePage = () => {
 
   }
 
-  if(!userId){
-    return null;
-  }
 
 
 

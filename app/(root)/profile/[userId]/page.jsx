@@ -9,13 +9,6 @@ import Card from '@/components/card/card';
 
 const ProfilePage = () => {
   const loggedInUserId = useSelector((state) => state.profile.data.id);
-
-  useEffect(() => {
-    if (!loggedInUserId) {
-      router.push('/auth/login');
-    }
-  },[]);
-
   const userId = useParams().userId;
 
   const [resData, setResData] = useState([]);
@@ -75,10 +68,6 @@ const ProfilePage = () => {
     setActiveTab(tabName);
     router.push(`/profile/${userId}?tab=${tabName}`);
   };
-
-  if (!loggedInUserId) {
-  return null; // or loading spinner
-}
 
   return (
     <div className='w-full flex flex-col gap-5 items-center my-5'>

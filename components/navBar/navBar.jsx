@@ -52,11 +52,8 @@ const NavBar = () => {
             credentials: 'include'
         }).then(response => {
             if (response.ok) {
-                dispatch(setActiveLink('home'));
-                router.push('/');
-                // window.location.reload();
+                window.location.reload();
                 dispatch(setProfile({}));
-
             }
         });
     };
